@@ -1,15 +1,16 @@
 const webpack = require('webpack');
 const util= require('util');
 const path = require('path');
+const htmlWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
     entry: {
         index:  path.resolve(__dirname, '../src/main.js')
     },
     output: {
-        path: path.resolve(__dirname, '../src/assets'),
-        publicPath: '/assets',
-        filename: 'build.js'
+        path: path.resolve(__dirname, '../assets'),
+        filename: '[name].js'
     },
     module: {
         rules:[
@@ -44,11 +45,22 @@ module.exports = {
             'vue$':'vue/dist/vue.esm.js',
             '@': path.resolve(__dirname, '../src'),
             'components': path.resolve(__dirname,'../src/components'),
-        }
+        },
+        extensions:['.vue','.js','.json']
     },
     devServer: {
+        host:'localhost',
+        port:8083,
         inline:true,
         hot: true,
     },
     devtool: '#eval-source-map',
+    plugins:[
+        new htmlWebpackPlugin({
+            template:path.join(__dirname,'../index.html'),
+            filename:'index.html'
+        }),
+        new VueLoaderPlugin(),
+        new webpack.HotModuleReplacementPlugin()
+    ]
 }

@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
+const path = require('path')
 
-app.use(express.static(path.join(__dirname,'../assets')))
+app.use(express.static(path.join(__dirname,'../../assets')))
 
 app.get('/',(req,res)=>{
     res.sendFile('index.html')
@@ -9,20 +10,27 @@ app.get('/',(req,res)=>{
 
 
 //websocket服务器
-const WsServer = require('ws').WsServer
+const Websocket = require('ws').Server
 
-const ws = new WsServer()
+const ws = new Websocket({
+    port:8083,
+    host:"127.0.0.1"
+})
+const clients=[];
 ws.on('connection',(ws)=>{
+    clients.push(ws);
     ws.on('message',(data)=>{
-        ws.clients.forEach(client => {
+        clients.forEach(client => {
             client.send(data)
         });
     })
 })
 
-ws.createSever().listen(8083,()=>{
-    console.log("启动ws服务器成功！")
+ws.on('close',(ws)=>{
+    const index = clients.indexOf(ws);
+    clients.splice(index,1);
 })
+
 
 
 

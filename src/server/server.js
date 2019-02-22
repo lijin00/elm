@@ -7,6 +7,11 @@ app.use(express.static(path.join(__dirname,'../../assets')))
 app.get('/',(req,res)=>{
     res.sendFile('index.html')
 }).listen(8081)
+app.get('/room',(req,res)=>{
+    res.json({
+        "id":1213
+    })
+})
 
 
 //websocket服务器

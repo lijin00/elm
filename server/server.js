@@ -18,8 +18,8 @@ app.get('/room',(req,res)=>{
 const Websocket = require('ws').Server
 
 const ws = new Websocket({
-    port:8083,
-    host:"127.0.0.1"
+    port:3389,
+    host:"47.107.159.206"
 })
 const clients=[];
 ws.on('connection',(ws)=>{
